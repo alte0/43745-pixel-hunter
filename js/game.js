@@ -120,17 +120,13 @@ const startTimer = (state, questions) => {
       startTimer(state, questions);
     }
   }, TIMER_DELAY);
-}
+};
 /**
  * остановка счетчика
- * @param {Object} state
 */
-const stopTimer = (state) => {
-  if (state) {
-    state.TIME = 30;
-  }
+const stopTimer = () => {
   clearTimeout(timer);
-}
+};
 
 /**
 * управление игровыми экранами
@@ -148,7 +144,8 @@ const controlGameScreens = (state = Object.assign({}, INITIAL_GAME), questions) 
     changeScreen(resultScreen(resulltUserStat, statsAnswersStr));
     return;
   }
-  stopTimer(state);
+  state.TIME = 30;
+  stopTimer();
   changeScreen(header(state), setGame(state, questions, statsAnswersStr));
 };
 /** Подсчет очков при окончании игры

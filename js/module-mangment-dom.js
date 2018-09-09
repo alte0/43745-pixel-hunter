@@ -39,8 +39,8 @@ const deleteElement = (element) => {
 * @param {HTMLElement} newElem
 */
 const updateHeader = (newElem) => {
-  const deleteElement = mainElement.querySelector(`.header`);
-  mainElement.replaceChild(newElem, deleteElement);
+  const deleteElem = mainElement.querySelector(`.header`);
+  mainElement.replaceChild(newElem, deleteElem);
 };
 
 export {renderTemplate, changeScreen, addModal, deleteElement, updateHeader};
