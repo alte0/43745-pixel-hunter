@@ -1,15 +1,16 @@
 import returnScreenGame from './module-game-screens';
 import header from './module-header.js';
-import {changeScreen} from './module-mangment-dom.js';
+import {changeScreen, updateHeader} from './module-mangment-dom.js';
 import resultScreen from './screens/module-result-screen';
 
 const INITIAL_GAME = Object.freeze({
   LIVES: 3,
   LEVEL: 0,
-  TIME: 0,
+  TIME: 30,
   POINTS: 0
 });
 const MIN_ANSWER = 10;
+const TOTAL_TIME = 30;
 const FAST_TIME = 10;
 const NORMAL_TIME_VALUE_ONE = 10;
 const NORMAL_TIME_VALUE_TWO = 20;
@@ -23,7 +24,9 @@ const POINT_ADD = 100;
 const POINT_BONUS = 50;
 const POINT_FINE = 50;
 const POINT_BONUS_LIVES = 50;
+const TIMER_DELAY = 1000;
 let timeText;
+let timer;
 let UserStat = {
   NAME: ``,
   ANSWERS: []
@@ -42,6 +45,7 @@ const setGame = (state, array, statsAnswersStr) => {
   const newState = Object.assign({}, state, {
     LEVEL: state.LEVEL + 1
   });
+  startTimer(newState, array);
 
   return gameScreen(newState, array[index].images, statsAnswersStr);
 };
@@ -53,25 +57,15 @@ const setGame = (state, array, statsAnswersStr) => {
 */
 const recordUserAnswer = (value, state) => {
   if (value) {
-    UserStat.ANSWERS.push({answer: true, elapsedTime: timeText});
+    UserStat.ANSWERS.push({answer: true, elapsedTime: TOTAL_TIME - timeText});
     return state;
   } else {
-    UserStat.ANSWERS.push({answer: false, elapsedTime: timeText});
+    UserStat.ANSWERS.push({answer: false, elapsedTime: TOTAL_TIME - timeText});
     return Object.assign({}, state, {
       LIVES: state.LIVES - 1
     });
   }
 };
-// /** запись текста времени
-// * @param {HTMLElement} element
-// * @param {String} text
-// */
-// const setTextTime = (element, text) => {
-//   if (text < 10) {
-//     text = `0` + text;
-//   }
-//   element.innerHTML = text;
-// };
 /** создание графики ответов
 * @return {String} answersListStr
 */
@@ -104,20 +98,40 @@ const createResponseStatistics = () => {
   answersListStr = answersListStr.join(``);
   return answersListStr;
 };
-// /** Счетчик времени
-// * @param {HTMLElement} timerElement
-// * @return {Number} timeText
-// */
-// const startTime = (timerElement) => {
-//   let date = Date.now();
+/** тик времени
+* @param {Object} state
+*/
+const tick = (state) => {
+  state.TIME = state.TIME - 1;
+  timeText = state.TIME;
+  updateHeader(header(state));
+};
+/** Счетчик времени
+* @param {Object} state
+* @param {Array} questions
+*/
+const startTimer = (state, questions) => {
+  timer = setTimeout(() => {
+    if (state.TIME === 0) {
+      const newStateGame = recordUserAnswer(false, state);
+      controlGameScreens(newStateGame, questions);
+    } else {
+      tick(state);
+      startTimer(state, questions);
+    }
+  }, TIMER_DELAY);
+}
+/**
+ * остановка счетчика
+ * @param {Object} state
+*/
+const stopTimer = (state) => {
+  if (state) {
+    state.TIME = 30;
+  }
+  clearTimeout(timer);
+}
 
-//   setInterval(() => {
-//     let now = Date.now();
-//     timeText = Math.round((now - date) / 1000);
-//     setTextTime(timerElement, timeText);
-//   }, 20);
-//   return timeText;
-// };
 /**
 * управление игровыми экранами
 * @param {Object} state
@@ -129,11 +143,12 @@ const controlGameScreens = (state = Object.assign({}, INITIAL_GAME), questions) 
   }
   let statsAnswersStr = createResponseStatistics();
   if (state.LIVES === -1 || state.LEVEL >= questions.length) {
+    stopTimer();
     const resulltUserStat = calculatePoints(UserStat.ANSWERS, state);
     changeScreen(resultScreen(resulltUserStat, statsAnswersStr));
     return;
   }
-
+  stopTimer(state);
   changeScreen(header(state), setGame(state, questions, statsAnswersStr));
 };
 /** Подсчет очков при окончании игры
@@ -147,6 +162,9 @@ const calculatePoints = (arrayUserAnswers, dataAnswers) => {
     return dataAnswers;
   }
 
+  dataAnswers.generalPoints = {
+    POINTS: 0
+  };
   dataAnswers.fastPoints = {
     POINTS: 0,
     ITEMS: 0
@@ -165,15 +183,20 @@ const calculatePoints = (arrayUserAnswers, dataAnswers) => {
   };
 
   arrayUserAnswers.forEach((item) => {
-    if (item.answer && item.elapsedTime < FAST_TIME) {
+    const answer = item.answer;
+    const elapsedTime = item.elapsedTime;
+    if (answer && elapsedTime < FAST_TIME) {
       dataAnswers.fastPoints.POINTS = dataAnswers.fastPoints.POINTS + POINT_ADD + POINT_BONUS;
       dataAnswers.fastPoints.ITEMS += 1;
-    } else if ((item.answer && item.elapsedTime >= NORMAL_TIME_VALUE_ONE && item.elapsedTime <= NORMAL_TIME_VALUE_TWO) || (item.elapsedTime === undefined && item.answer === true)) {
+    } else if (answer && elapsedTime >= NORMAL_TIME_VALUE_ONE && elapsedTime <= NORMAL_TIME_VALUE_TWO) {
       dataAnswers.normalPoints.POINTS = dataAnswers.normalPoints.POINTS + POINT_ADD;
       dataAnswers.normalPoints.ITEMS += 1;
-    } else if (item.answer && item.elapsedTime > SLOW_TIME) {
+    } else if (answer && elapsedTime > SLOW_TIME) {
       dataAnswers.slowPoints.POINTS = dataAnswers.slowPoints.POINTS + POINT_ADD - POINT_FINE;
       dataAnswers.slowPoints.ITEMS += 1;
+    }
+    if (answer) {
+      dataAnswers.generalPoints.POINTS = dataAnswers.generalPoints.POINTS + POINT_ADD;
     }
   });
 

@@ -34,5 +34,13 @@ const addModal = (element) => {
 const deleteElement = (element) => {
   mainElement.removeChild(element);
 };
+/**
+* обновление header
+* @param {HTMLElement} newElem
+*/
+const updateHeader = (newElem) => {
+  const deleteElement = mainElement.querySelector(`.header`);
+  mainElement.replaceChild(newElem, deleteElement);
+};
 
-export {renderTemplate, changeScreen, addModal, deleteElement};
+export {renderTemplate, changeScreen, addModal, deleteElement, updateHeader};

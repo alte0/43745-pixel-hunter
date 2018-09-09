@@ -1,10 +1,6 @@
 import AbstractView from '../../clases/abstract-view.js';
 
 export default class WelcomeView extends AbstractView {
-  constructor() {
-    super();
-  }
-
   get template() {
     return `
       <section class="greeting central--blur">

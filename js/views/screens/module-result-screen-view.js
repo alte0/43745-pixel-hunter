@@ -15,11 +15,11 @@ export default class ResultView extends AbstractView {
     } else {
       slowPoint = ``;
     }
-    let normalPoints;
-    if (obj.normalPoints) {
-      normalPoints = obj.normalPoints.POINTS !== undefined ? obj.normalPoints.POINTS : ``;
+    let generalPoints;
+    if (obj.generalPoints) {
+      generalPoints = obj.generalPoints.POINTS !== undefined ? obj.generalPoints.POINTS : ``;
     } else {
-      normalPoints = ``;
+      generalPoints = ``;
     }
 
     let html = ``;
@@ -46,26 +46,26 @@ export default class ResultView extends AbstractView {
         </ul>
       </td>
       <td class="result__points">× 100</td>
-      <td class="result__total">${normalPoints}</td>
+      <td class="result__total">${generalPoints}</td>
     </tr>
     <tr>
       <td></td>
       <td class="result__extra">Бонус за скорость:</td>
-      <td class="result__extra">${obj.fastPoints ? obj.fastPoints.items : ``}<span class="stats__result stats__result--fast"></span></td>
+      <td class="result__extra">${obj.fastPoints ? obj.fastPoints.ITEMS : ``}<span class="stats__result stats__result--fast"></span></td>
       <td class="result__points">× 150</td>
       <td class="result__total">${obj.fastPoints ? obj.fastPoints.POINTS : ``}</td>
     </tr>
     <tr>
       <td></td>
       <td class="result__extra">Бонус за жизни:</td>
-      <td class="result__extra">${obj.livesPoints ? obj.livesPoints.items : ``}<span class="stats__result stats__result--alive"></span></td>
+      <td class="result__extra">${obj.livesPoints ? obj.livesPoints.ITEMS : ``}<span class="stats__result stats__result--alive"></span></td>
       <td class="result__points">× 50</td>
       <td class="result__total">${obj.livesPoints ? obj.livesPoints.POINTS : ``}</td>
     </tr>
     <tr>
       <td></td>
       <td class="result__extra">Штраф за медлительность:</td>
-      <td class="result__extra">${obj.slowPoints ? obj.slowPoints.items : obj.slowPoints}<span class="stats__result stats__result--slow"></span></td>
+      <td class="result__extra">${obj.slowPoints ? obj.slowPoints.ITEMS : obj.slowPoints}<span class="stats__result stats__result--slow"></span></td>
       <td class="result__points">× 50</td>
       <td class="result__total">${slowPoint}</td>
     </tr>

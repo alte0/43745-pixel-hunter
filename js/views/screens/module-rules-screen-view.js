@@ -2,10 +2,6 @@ import {setEventForBtnBack} from '../../module-back-btn.js';
 import AbstractView from '../../clases/abstract-view.js';
 
 export default class RulesView extends AbstractView {
-  constructor() {
-    super();
-  }
-
   get template() {
     return `
       <header class="header">
