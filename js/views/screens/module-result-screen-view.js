@@ -1,7 +1,7 @@
 import {setEventForBtnBack} from '../../module-back-btn.js';
 import AbstractView from '../../clases/abstract-view.js';
 
-export default class ResultScreen extends AbstractView {
+export default class ResultView extends AbstractView {
   constructor(objUserStat, statsAnswersStr) {
     super();
     this._objUserStat = objUserStat;

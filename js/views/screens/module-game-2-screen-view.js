@@ -1,6 +1,6 @@
 import AbstractView from '../../clases/abstract-view.js';
 
-export default class GameTwoScreen extends AbstractView {
+export default class GameTwoView extends AbstractView {
   constructor(state, arrImages, statsAnswersStr) {
     super();
     this._state = state;

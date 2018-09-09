@@ -1,7 +1,7 @@
 import {setEventForBtnBack} from '../module-back-btn.js';
 import AbstractView from '../clases/abstract-view.js';
 
-export default class Header extends AbstractView {
+export default class HeaderView extends AbstractView {
   constructor(state) {
     super();
     this._state = state;

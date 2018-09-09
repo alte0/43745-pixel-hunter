@@ -1,10 +1,6 @@
 import AbstractView from '../../clases/abstract-view.js';
 
-export default class MainScreen extends AbstractView {
-  constructor() {
-    super();
-  }
-
+export default class MainView extends AbstractView {
   get template() {
     return `
     <section class="intro">

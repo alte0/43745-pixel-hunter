@@ -1,6 +1,6 @@
 import AbstractView from '../clases/abstract-view.js';
 
-export default class ModalConfirm extends AbstractView {
+export default class ModalConfirmView extends AbstractView {
   constructor() {
     super();
     this.ESC_CODE = 27;
