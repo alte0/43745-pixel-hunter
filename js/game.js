@@ -45,7 +45,10 @@ const setGame = (state, array, statsAnswersStr) => {
   const newState = Object.assign({}, state, {
     LEVEL: state.LEVEL + 1
   });
-  startTimer(newState, array);
+  const gameStateHeader = Object.assign({}, newState, {
+    TIME: INITIAL_GAME.TIME
+  });
+  startTimer(gameStateHeader, array);
 
   return gameScreen(newState, array[index].images, statsAnswersStr);
 };
@@ -144,7 +147,6 @@ const controlGameScreens = (state = Object.assign({}, INITIAL_GAME), questions) 
     changeScreen(resultScreen(resulltUserStat, statsAnswersStr));
     return;
   }
-  state.TIME = 30;
   stopTimer();
   changeScreen(header(state), setGame(state, questions, statsAnswersStr));
 };
