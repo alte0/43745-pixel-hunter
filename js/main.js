@@ -1,4 +1,3 @@
-import {changeScreen} from './module-mangment-dom.js';
-import mainScreen from './screens/module-main-screen.js';
+import Application from './clases/application.js';
 
-changeScreen(mainScreen());
+Application.showMainScreen();

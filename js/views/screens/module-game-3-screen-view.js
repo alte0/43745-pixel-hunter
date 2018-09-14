@@ -6,7 +6,7 @@ export default class GameThreeView extends AbstractView {
     this._state = state;
     this._arrImages = arrImages;
     this._statsAnswersStr = statsAnswersStr;
-    this._CORRECT_ANSWER = `paint`;
+    this.CORRECT_ANSWER = `paint`;
   }
 
   nextScreen() { }

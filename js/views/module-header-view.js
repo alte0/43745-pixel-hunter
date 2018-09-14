@@ -1,4 +1,4 @@
-import {setEventForBtnBack} from '../module-back-btn.js';
+// import {setEventForBtnBack} from '../module-back-btn.js';
 import AbstractView from '../clases/abstract-view.js';
 
 export default class HeaderView extends AbstractView {
@@ -29,7 +29,16 @@ export default class HeaderView extends AbstractView {
   }
 
   bind() {
-    setEventForBtnBack(this.element);
+    const btnBack = this.element.querySelector(`.back`);
+    /**
+     * добавляет модальное окно с подтверждением
+     */
+    const clickHandler = () => {
+      this.setEventScreen();
+    };
+
+    btnBack.addEventListener(`click`, clickHandler);
+
   }
 }
 

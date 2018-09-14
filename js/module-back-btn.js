@@ -1,11 +1,11 @@
 import {addModal} from './module-mangment-dom.js';
-import modalConfirm from './module-modal-confirm.js';
+import Application from './clases/application.js';
 
 /**
  * добавляет модальное окно с подтверждением
  */
 const clickHandler = () => {
-  addModal(modalConfirm());
+  addModal(Application.showModalConfirm());
 };
 /** поиск кнопки назад на экране и установка события
  * @param {HTMLElement} searchElementInWrap
